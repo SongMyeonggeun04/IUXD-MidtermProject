@@ -8,6 +8,14 @@ let direction = 1;
 let viewStartTime = 0;
 let popupVisible = false;
 let popupImage = [];
+let popupData = [];
+
+let titleImage;
+
+let currentPage = "slider"; // 현재 페이지 상태: "slider" 또는 "upload"
+
+let uploadedImage;
+let uploadBtn;
 
 function preload() {
     let urls = [
@@ -38,11 +46,11 @@ function preload() {
         //시커스1
         { text: "2024 SEEKERS SUMMER CONCERT TICKET\n티켓 가격 : 7,000원\n티켓 오픈 일시 : 2024.06.24 (월) 18:00", link: "https://everytime.kr/374660/v/347522024" },
         //파동1
-        { text: "중앙대학교 × 공간파동 《잃어버린 순간들》\n당신은 어떤 순간을 잃어버렸고,\n또 그것을 찾기 위해 무엇을 할 것인가?", link: "https://example.com/2" },
+        { text: "중앙대학교 × 공간파동 《잃어버린 순간들》\n당신은 어떤 순간을 잃어버렸고,\n또 그것을 찾기 위해 무엇을 할 것인가?", link: "https://naver.com" },
         //내리디깅1
         { text: "내리디깅 디제잉 파티에 여러분을 초대합니다.\n공사 기간 : 3월 7일(금) 8:00pm~12:00am\n공사 범위 : 올빼미", link: "https://example.com/3" },
         //시커스2
-        { text: "안녕하세요. 경인교대 ST.7, 명지대 화이트홀스, 서울과기대 세마치, 중앙대 SEEKERS와\n함께 준비한 연합공연 “청춘일화”에 여러분을 초대합니다.", link: "https://example.com/4" }
+        { text: "안녕하세요. 경인교대 ST.7, 명지대 화이트홀스,\n서울과기대 세마치, 중앙대 씨커스와 함께 준비한\n연합공연 “청춘일화”에 여러분을 초대합니다.", link: "https://example.com/4" }
     ];
 
     for (let i = 0; i < urls.length; i++) {
@@ -51,6 +59,159 @@ function preload() {
     }
 
     titleImage = loadImage("https://lh3.googleusercontent.com/fife/ALs6j_FKQYzRMrSkkrP4Sr-2B8SbFonjtHuGnwnSiI9F9qeE_N0c0S-pO4Xr7Zs5wehxSeRFpSc0tDliww_WdZhFO83RxphmeLitui865kwtLiaOxuJUU2wbE4zz5FDC3RtPeysF2Pz_Ee_twhW0aVtda_8-RatZcFx-O0_70ErFflL0rNwa6XFGVdu7xh-aht6NSTHuOmNF6TpxBaYCVeAbfYZVcHexQUqON0C87hIBQwQQZrpHbB4gU5IUrJiysrtFFGFfi78JYU_NKiJk9QQQNAxLz9I-6ZZuBuLN9BbeCP-kPKnyumMcDqbfntg4wni8WDKPLsDB3TDD0OI4R1X6Pbb9qD3j0AopKfqN_OTgeyu5JSQRu0R7HgzXSZWxyQtvh8DVixr9ga7uO10xstyFDLu9Hf3kRZSgvZmKprIg5uVS1n-oN3sMwKqsWat78tCxmzoJZaJHTYoXPPiofWI2IX4JTHG-3aeAf0kx1trAX1dMA9xEd2hL8WROCmdov6fhugdhKfdzKbBoyWzs-p-SEriyjqFo3gjYMA9sEbqD-ynYjlUwZDqMn1udRXZdSzfhnVem2yGEKdmQPkIjpjCFS1mR7uy1pZJHLrg-HuyeEeHpMe8n-UbI-FLE0ti_uLc7t-7bAnl0NTBQ_kvtUD_oGIoMq24qOHXdFOSHLMgTFLGYPM22T3oSI24Un_KKn2WN83-yAytJTtR7ejpmEAF-U8YLq9yfZAeQnhI_gJJjkecgGMHrQVCYctejoyGvopMq1EIeg9hFhzQep0CIQy-PH62xvAzZp3js1v8gCGT4oiBHZ7WLiH-DD6XuCgTrp3x10yus1AKrX51nCE7LQSPfY5hpUtBH4ndSqw1CDgk5bFQpVDJzM7nM5b3OW8rlhrT-4X9xsg-_aXexMvLwS0Fh8xpY--BrZtOEZ7yRHKruw6mPuBd5zuOv71XNsH-dwfhtGVSzU4yLWfqvCc_7gg-Ximr10ruNTc_j5TLqTXHRtgDuH1Wmbs64ESCd4QLI7yyconcYyZ5KLHnu4sGOtw9Qbx7fpPLbwXtXSDb7OiRYtR0y1RF4pYLM3Ryxa0D1ra34hXF0enRLk7tJGNV7QZ3xRP0GnP5SAbVAm6J3A3Z719LA-G76aBNqshhJcA6RBs3fsRFBk2yNzM2wlD_7AMWnhvSes3FXKG6OAvda0owdkyoWHYFXRDy6KKp1T5Dc-tjtir2sDje6e10xC4di6bPlqxNCDpI51ixMOc8iyTR-toji18SYDE-YsdEcoL7AaM2xCHjs1xtQScY4VjL9HIbSeEn_YUnLxast-PaM-BGodNXhsnTyYiNNUeskti68qQHmfq6lBdE6JP4e0SYpguXVyisiq6gHPdLJpUf9m_1aBjRgXmRHHvb8BWsmUj-S5qJcPnAA63d6PKMHOYNJE3_DatNhnoxqhvSQ4ee0NwkxxRneKBSxMLBWVjh4JHGLlFJBCbe5j-uyvskm5nrDVUSvLrpW_RfFekU_vdgXi-gVaOQnVJmsqwslZsl_t-zjmxmZ3jwrwBCmwmqZLEmjMZodQjKStgUchf0n4_2mIaw1LrDWUxN8_-YmuHmn25RL6BmUYUY-WvUfE0kuT4Y9Zhw3uwZ8-Fo4rBIyac6YfVqCY3WRcsVBhYN6YTPgCiN7uc-29hTEF63m7bUquT2A1urnHZs59sc=w2560-h1186");
+}
+
+function setup() {
+    createCanvas(360, 640);
+    textAlign(CENTER, CENTER);
+    textSize(14);
+    viewStartTime = millis();
+
+    // 업로드 버튼 (초기에는 숨겨짐)
+    uploadBtn = createFileInput(handleFile);
+    uploadBtn.position(100, 560);
+    uploadBtn.hide(); 
+}
+
+function draw() {
+    background(255);
+
+    if (currentPage === "slider") {
+        drawSliderPage();
+        uploadBtn.hide();
+    } else if (currentPage === "upload") {
+        drawUploadPage();
+        uploadBtn.show();
+    }
+
+    drawSwitchButton(); // 상단 전환 버튼 공통
+}
+
+function drawSliderPage() {
+    drawArrows();
+
+    noStroke();
+    fill(249, 249, 249);
+    rect(0, 0, 70, 360 * 0.15);
+
+    let c1 = color('#F9F9F9');
+    let c2 = color('#13757B');
+    let startX = 70;
+    let endX = 360;
+
+    for (let x = startX; x <= endX; x++) {
+        let inter = map(x, startX, endX, 0, 1);
+        let c = lerpColor(c1, c2, inter);
+        stroke(c);
+        line(x, 0, x, 360 * 0.15);
+    }
+
+    fill(255);
+    textSize(15);
+    textStyle(BOLD);
+    text("중앙인들을 위한, 누구보다 가까운 예술", 215, 360 * 0.15 * 0.5);
+
+    if (titleImage) {
+        imageMode(CENTER);
+        image(titleImage, 36, 360 * 0.15 * 0.5, 48, 48);
+    }
+
+    animation();
+    popup();
+    edge();
+}
+
+function drawUploadPage() {
+    fill(100, 130, 160);
+    stroke(0);
+    rect(20, 20, 140, 100, 5);
+    fill(0);
+    noStroke();
+    text("(날씨와 시간표를 \n토대로 컨텐츠 추천)", 90, 70);
+
+    fill(255, 150, 120);
+    stroke(0);
+    rect(200, 20, 140, 100, 5);
+    fill(0);
+    noStroke();
+    text("날짜 출력 박스", 270, 70);
+
+    fill(210, 140, 200);
+    stroke(150, 0, 150);
+    rect(20, 140, 320, 400, 30);
+    fill(0);
+    noStroke();
+    text("사용자가 사진을 추가하면\n그 사진을 출력해주는 박스", 180, 240);
+
+    if (uploadedImage) {
+        imageMode(CENTER);
+        image(uploadedImage, 180, 340, 260, 320);
+    }
+
+    edge();
+}
+
+function drawSwitchButton() {
+    fill('#13757B');
+    noStroke();
+    rect(10, 600, 120, 30, 10);
+    fill(255);
+    textSize(14);
+    if (currentPage === "slider") {
+        text("업로드 페이지 →", 70, 615);
+    } else {
+        text("← 돌아가기", 70, 615);
+    }
+}
+
+function mousePressed() {
+    // 페이지 전환 버튼 클릭
+    if (mouseX > 10 && mouseX < 130 && mouseY > 600 && mouseY < 630) {
+        if (currentPage === "slider") {
+            currentPage = "upload";
+        } else {
+            currentPage = "slider";
+        }
+        return;
+    }
+
+    if (currentPage !== "slider") return;
+
+    if (popupVisible) {
+        let textY = height / 2 + popupImage[currentIndex].height / 8 + 10;
+        if (mouseX > width / 2 - 100 && mouseX < width / 2 + 100 &&
+            mouseY > textY && mouseY < textY + 48) {
+            window.open(popupData[currentIndex].link, "_blank");
+            return;
+        }
+        popupVisible = false;
+        viewStartTime = millis();
+        return;
+    }
+
+    if (transitioning) return;
+
+    if (mouseX > 30 && mouseX < 50 && mouseY > height / 2 - 20 && mouseY < height / 2 + 20) {
+        targetIndex = (currentIndex - 1 + images.length) % images.length;
+        direction = 1;
+        transitioning = true;
+    }
+
+    if (mouseX > width - 50 && mouseX < width - 30 && mouseY > height / 2 - 20 && mouseY < height / 2 + 20) {
+        targetIndex = (currentIndex + 1) % images.length;
+        direction = -1;
+        transitioning = true;
+    }
+}
+
+function handleFile(file) {
+    if (file.type === 'image') {
+        uploadedImage = loadImage(file.data, () => {
+            console.log("이미지 로드 완료!");
+        });
+    } else {
+        uploadedImage = null;
+    }
 }
 
 function drawArrows() {
@@ -77,7 +238,7 @@ function animation() {
             currentIndex = targetIndex;
             transitionX = 0;
             transitioning = false;
-            viewStartTime = millis(); // 새 이미지 시작 시간 초기화
+            viewStartTime = millis();
         }
     } else {
         imageMode(CENTER);
@@ -85,106 +246,36 @@ function animation() {
     }
 }
 
-function popup(){
+function popup() {
     if (!transitioning && !popupVisible && millis() - viewStartTime > 2000) {
         popupVisible = true;
     }
 
     if (popupVisible) {
+        push(); // 스타일 변경 전 상태 저장
+    
         fill(0, 0, 0, 150);
         rect(0, 0, width, height);
+
         imageMode(CENTER);
         image(popupImage[currentIndex], width / 2, height / 2, popupImage[currentIndex].width / 4, popupImage[currentIndex].height / 4);
-        // 설명 텍스트 출력
+
         fill(255);
         textSize(16);
-        textAlign(CENTER, TOP);
-        textY = height / 2 + popupImage[currentIndex].height / 8 + 10;
+        textAlign(CENTER, TOP); // 팝업 안에서만 적용
+        let textY = height / 2 + popupImage[currentIndex].height / 8 + 10;
         text(popupData[currentIndex].text, width / 2, textY);
 
-        // 마우스가 텍스트 위에 있을 때 커서 모양 바꾸기
+        // 버튼 하이라이트 (링크 영역)
         if (mouseX > width / 2 - 100 && mouseX < width / 2 + 100 &&
             mouseY > textY && mouseY < textY + 48) {
-            cursor(HAND);
+                cursor(HAND);
+            } else {
+                cursor(ARROW);
+            }
+            pop(); // 스타일 원상복귀
         } else {
-            cursor(ARROW);
-        }
-    } else {
-        cursor(ARROW);
+                cursor(ARROW);
     }
 }
 
-function mousePressed() {
-    if (popupVisible) {
-        // 텍스트 클릭 시 링크로 이동
-        if (mouseX > width / 2 - 100 && mouseX < width / 2 + 100 &&
-            mouseY > textY && mouseY < textY + 48) {
-            window.open(popupData[currentIndex].link, "_blank");
-            return;
-        }
-
-        popupVisible = false;
-        viewStartTime = millis();
-        return;
-    }
-
-    if (transitioning) return;
-
-    // 왼쪽 화살표
-    if (mouseX > 30 && mouseX < 50 && mouseY > height / 2 - 20 && mouseY < height / 2 + 20) {
-        targetIndex = (currentIndex - 1 + images.length) % images.length;
-        direction = 1;
-        transitioning = true;
-    }
-
-    // 오른쪽 화살표
-    if (mouseX > width - 50 && mouseX < width - 30 && mouseY > height / 2 - 20 && mouseY < height / 2 + 20) {
-        targetIndex = (currentIndex + 1) % images.length;
-        direction = -1;
-        transitioning = true;
-    }
-}
-
-
-function setup() {
-    createCanvas(360, 640);
-    viewStartTime = millis();
-}
-
-function draw() {
-    background(255);
-    drawArrows();
-
-    noStroke();
-    fill(249, 249, 249);
-    rect(0, 0, 70, 360 * 0.15);
-
-    let c1 = color('#F9F9F9'); // 시작 색
-    let c2 = color('#13757B'); // 끝 색
-
-    let startX = 70;
-    let endX = 360;
-
-for (let x = startX; x <= endX; x++) {
-    let inter = map(x, startX, endX, 0, 1);
-    let c = lerpColor(c1, c2, inter);
-    stroke(c);
-    line(x, 0, x, 360 * 0.15);
-}
-
-    fill(255);
-    textSize(15);
-    textAlign(CENTER, CENTER);
-    textStyle(BOLD);
-    text("중앙인들을 위한, 누구보다 가까운 예술", 215, 360 * 0.15 * 0.5);
-
-    if (titleImage) {
-        imageMode(CENTER);
-        image(titleImage, 36, 360 * 0.15 * 0.5, 48, 48); // 위치와 크기 조정
-    }
-
-
-    animation();
-    popup();
-    edge();
-}
