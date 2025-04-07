@@ -34,10 +34,23 @@ function preload() {
         
     ];
 
+    popupData = [
+        //시커스1
+        { text: "2024 SEEKERS SUMMER CONCERT TICKET\n티켓 가격 : 7,000원\n티켓 오픈 일시 : 2024.06.24 (월) 18:00", link: "https://everytime.kr/374660/v/347522024" },
+        //파동1
+        { text: "중앙대학교 × 공간파동 《잃어버린 순간들》\n당신은 어떤 순간을 잃어버렸고,\n또 그것을 찾기 위해 무엇을 할 것인가?", link: "https://example.com/2" },
+        //내리디깅1
+        { text: "내리디깅 디제잉 파티에 여러분을 초대합니다.\n공사 기간 : 3월 7일(금) 8:00pm~12:00am\n공사 범위 : 올빼미", link: "https://example.com/3" },
+        //시커스2
+        { text: "안녕하세요. 경인교대 ST.7, 명지대 화이트홀스, 서울과기대 세마치, 중앙대 SEEKERS와\n함께 준비한 연합공연 “청춘일화”에 여러분을 초대합니다.", link: "https://example.com/4" }
+    ];
+
     for (let i = 0; i < urls.length; i++) {
         images[i] = loadImage(urls[i]);
         popupImage[i] = loadImage(popupurls[i]);
     }
+
+    titleImage = loadImage("https://lh3.googleusercontent.com/fife/ALs6j_FKQYzRMrSkkrP4Sr-2B8SbFonjtHuGnwnSiI9F9qeE_N0c0S-pO4Xr7Zs5wehxSeRFpSc0tDliww_WdZhFO83RxphmeLitui865kwtLiaOxuJUU2wbE4zz5FDC3RtPeysF2Pz_Ee_twhW0aVtda_8-RatZcFx-O0_70ErFflL0rNwa6XFGVdu7xh-aht6NSTHuOmNF6TpxBaYCVeAbfYZVcHexQUqON0C87hIBQwQQZrpHbB4gU5IUrJiysrtFFGFfi78JYU_NKiJk9QQQNAxLz9I-6ZZuBuLN9BbeCP-kPKnyumMcDqbfntg4wni8WDKPLsDB3TDD0OI4R1X6Pbb9qD3j0AopKfqN_OTgeyu5JSQRu0R7HgzXSZWxyQtvh8DVixr9ga7uO10xstyFDLu9Hf3kRZSgvZmKprIg5uVS1n-oN3sMwKqsWat78tCxmzoJZaJHTYoXPPiofWI2IX4JTHG-3aeAf0kx1trAX1dMA9xEd2hL8WROCmdov6fhugdhKfdzKbBoyWzs-p-SEriyjqFo3gjYMA9sEbqD-ynYjlUwZDqMn1udRXZdSzfhnVem2yGEKdmQPkIjpjCFS1mR7uy1pZJHLrg-HuyeEeHpMe8n-UbI-FLE0ti_uLc7t-7bAnl0NTBQ_kvtUD_oGIoMq24qOHXdFOSHLMgTFLGYPM22T3oSI24Un_KKn2WN83-yAytJTtR7ejpmEAF-U8YLq9yfZAeQnhI_gJJjkecgGMHrQVCYctejoyGvopMq1EIeg9hFhzQep0CIQy-PH62xvAzZp3js1v8gCGT4oiBHZ7WLiH-DD6XuCgTrp3x10yus1AKrX51nCE7LQSPfY5hpUtBH4ndSqw1CDgk5bFQpVDJzM7nM5b3OW8rlhrT-4X9xsg-_aXexMvLwS0Fh8xpY--BrZtOEZ7yRHKruw6mPuBd5zuOv71XNsH-dwfhtGVSzU4yLWfqvCc_7gg-Ximr10ruNTc_j5TLqTXHRtgDuH1Wmbs64ESCd4QLI7yyconcYyZ5KLHnu4sGOtw9Qbx7fpPLbwXtXSDb7OiRYtR0y1RF4pYLM3Ryxa0D1ra34hXF0enRLk7tJGNV7QZ3xRP0GnP5SAbVAm6J3A3Z719LA-G76aBNqshhJcA6RBs3fsRFBk2yNzM2wlD_7AMWnhvSes3FXKG6OAvda0owdkyoWHYFXRDy6KKp1T5Dc-tjtir2sDje6e10xC4di6bPlqxNCDpI51ixMOc8iyTR-toji18SYDE-YsdEcoL7AaM2xCHjs1xtQScY4VjL9HIbSeEn_YUnLxast-PaM-BGodNXhsnTyYiNNUeskti68qQHmfq6lBdE6JP4e0SYpguXVyisiq6gHPdLJpUf9m_1aBjRgXmRHHvb8BWsmUj-S5qJcPnAA63d6PKMHOYNJE3_DatNhnoxqhvSQ4ee0NwkxxRneKBSxMLBWVjh4JHGLlFJBCbe5j-uyvskm5nrDVUSvLrpW_RfFekU_vdgXi-gVaOQnVJmsqwslZsl_t-zjmxmZ3jwrwBCmwmqZLEmjMZodQjKStgUchf0n4_2mIaw1LrDWUxN8_-YmuHmn25RL6BmUYUY-WvUfE0kuT4Y9Zhw3uwZ8-Fo4rBIyac6YfVqCY3WRcsVBhYN6YTPgCiN7uc-29hTEF63m7bUquT2A1urnHZs59sc=w2560-h1186");
 }
 
 function drawArrows() {
@@ -82,24 +95,49 @@ function popup(){
         rect(0, 0, width, height);
         imageMode(CENTER);
         image(popupImage[currentIndex], width / 2, height / 2, popupImage[currentIndex].width / 4, popupImage[currentIndex].height / 4);
+        // 설명 텍스트 출력
+        fill(255);
+        textSize(16);
+        textAlign(CENTER, TOP);
+        textY = height / 2 + popupImage[currentIndex].height / 8 + 10;
+        text(popupData[currentIndex].text, width / 2, textY);
+
+        // 마우스가 텍스트 위에 있을 때 커서 모양 바꾸기
+        if (mouseX > width / 2 - 100 && mouseX < width / 2 + 100 &&
+            mouseY > textY && mouseY < textY + 48) {
+            cursor(HAND);
+        } else {
+            cursor(ARROW);
+        }
+    } else {
+        cursor(ARROW);
     }
 }
 
 function mousePressed() {
     if (popupVisible) {
+        // 텍스트 클릭 시 링크로 이동
+        if (mouseX > width / 2 - 100 && mouseX < width / 2 + 100 &&
+            mouseY > textY && mouseY < textY + 48) {
+            window.open(popupData[currentIndex].link, "_blank");
+            return;
+        }
+
         popupVisible = false;
-        viewStartTime = millis(); // 팝업 닫고 타이머 리셋
+        viewStartTime = millis();
         return;
     }
 
     if (transitioning) return;
 
+    // 왼쪽 화살표
     if (mouseX > 30 && mouseX < 50 && mouseY > height / 2 - 20 && mouseY < height / 2 + 20) {
         targetIndex = (currentIndex - 1 + images.length) % images.length;
         direction = 1;
         transitioning = true;
     }
 
+    // 오른쪽 화살표
     if (mouseX > width - 50 && mouseX < width - 30 && mouseY > height / 2 - 20 && mouseY < height / 2 + 20) {
         targetIndex = (currentIndex + 1) % images.length;
         direction = -1;
@@ -115,20 +153,28 @@ function setup() {
 
 function draw() {
     background(255);
-    edge();
     drawArrows();
 
     noStroke();
+    fill(249, 249, 249);
+    rect(0, 0, 70, 360 * 0.15);
+
     fill(0, 66, 237);
-    rect(0, 0, width, 360 * 0.15);
+    rect(70, 0, 290, 360 * 0.15);
 
     fill(255);
-    textSize(32);
+    textSize(15);
     textAlign(CENTER, CENTER);
     textStyle(BOLD);
-    text("구해줘! 푸앙즈 >_<", width / 2, 360 * 0.15 * 0.5);
+    text("중앙인들을 위한, 누구보다 가까운 예술", 215, 360 * 0.15 * 0.5);
+
+    if (titleImage) {
+        imageMode(CENTER);
+        image(titleImage, 36, 360 * 0.15 * 0.5, 48, 48); // 위치와 크기 조정
+    }
+
 
     animation();
     popup();
-
+    edge();
 }
