@@ -54,7 +54,7 @@ function preload() {
 }
 
 function drawArrows() {
-    fill(0);
+    fill('#13757B');
     noStroke();
     triangle(30, height / 2, 50, height / 2 - 20, 50, height / 2 + 20);
     triangle(width - 30, height / 2, width - 50, height / 2 - 20, width - 50, height / 2 + 20);
@@ -159,8 +159,18 @@ function draw() {
     fill(249, 249, 249);
     rect(0, 0, 70, 360 * 0.15);
 
-    fill(0, 66, 237);
-    rect(70, 0, 290, 360 * 0.15);
+    let c1 = color('#F9F9F9'); // 시작 색
+    let c2 = color('#13757B'); // 끝 색
+
+    let startX = 70;
+    let endX = 360;
+
+for (let x = startX; x <= endX; x++) {
+    let inter = map(x, startX, endX, 0, 1);
+    let c = lerpColor(c1, c2, inter);
+    stroke(c);
+    line(x, 0, x, 360 * 0.15);
+}
 
     fill(255);
     textSize(15);
