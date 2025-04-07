@@ -122,24 +122,24 @@ function drawSliderPage() {
 }
 
 function drawUploadPage() {
-    fill(100, 130, 160);
+    fill('#13757B');
     stroke(0);
     rect(20, 20, 140, 100, 5);
-    fill(0);
+    fill(255);
     noStroke();
     text("(날씨와 시간표를 \n토대로 컨텐츠 추천)", 90, 70);
 
-    fill(255, 150, 120);
+    fill('#13757B');
     stroke(0);
     rect(200, 20, 140, 100, 5);
-    fill(0);
+    fill(255);
     noStroke();
     text("날짜 출력 박스", 270, 70);
 
-    fill(210, 140, 200);
+    fill('#13757B');
     stroke(150, 0, 150);
     rect(20, 140, 320, 400, 30);
-    fill(0);
+    fill(255);
     noStroke();
     text("사용자가 사진을 추가하면\n그 사진을 출력해주는 박스", 180, 240);
 
