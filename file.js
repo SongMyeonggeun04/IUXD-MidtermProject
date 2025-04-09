@@ -12,7 +12,7 @@ let popupData = [];
 
 let titleImage;
 
-let currentPage = "slider"; // 현재 페이지 상태: "slider" 또는 "upload"
+let currentPage = "slider";
 
 let uploadedImage;
 let uploadBtn;
