@@ -91,27 +91,35 @@ function draw() {
     if (isTransitioningPage) {
         transitionProgress += 1 / transitionDuration;
         let eased = easeInOutQuad(constrain(transitionProgress, 0, 1));
-
         let offset = eased * height;
+
         if (transitionDirection === "up") {
+            // 슬라이더 페이지 (올라가며 사라짐)
             push();
             translate(0, -offset);
             drawPage("slider");
+            drawUploadPeek(); // 하단 힌트도 같이
             pop();
 
+            // 업로드 페이지 (올라오며 등장)
             push();
             translate(0, height - offset);
             drawPage("upload");
+            drawSliderPeek(); // 상단 힌트도 같이
             pop();
         } else if (transitionDirection === "down") {
+            // 업로드 페이지 (내려가며 사라짐)
             push();
             translate(0, offset);
             drawPage("upload");
+            drawSliderPeek(); // 상단 힌트도 같이
             pop();
 
+            // 슬라이더 페이지 (내려오며 등장)
             push();
             translate(0, -height + offset);
             drawPage("slider");
+            drawUploadPeek(); // 하단 힌트도 같이
             pop();
         }
 
@@ -120,9 +128,68 @@ function draw() {
             transitionProgress = 0;
             currentPage = transitionDirection === "up" ? "upload" : "slider";
         }
+
     } else {
         drawPage(currentPage);
+
+        if (currentPage === "slider") {
+            drawUploadPeek();
+        } else if (currentPage === "upload") {
+            drawSliderPeek();
+        }
     }
+    edge(); // 공통 테두리
+}
+
+
+function drawUploadPeek() {
+    let peekHeight = 30;
+
+    push();
+    translate(0, height - peekHeight);
+
+    // 배경 영역
+    fill('#13757B'); // 업로드 페이지와 같은 색
+    noStroke();
+    rect(0, 0, width, peekHeight, 20, 20, 0, 0); // 위쪽만 둥글게
+
+    // 안내 텍스트
+    fill(255);
+    textSize(12);
+    textAlign(CENTER, CENTER);
+    text("↑ My Day", width / 2, peekHeight / 2);
+
+    pop();
+}
+
+function drawSliderPeek() {
+    let peekHeight = 30;
+
+    push();
+    translate(0, 0); // 화면 위쪽에 표시
+
+    fill('#F9F9F9'); // 슬라이더 페이지와 맞는 배경색
+    noStroke();
+    rect(0, 0, width, peekHeight, 0, 0, 20, 20); // 아래쪽만 둥글게
+
+    fill('#13757B');
+    textSize(12);
+    textAlign(CENTER, CENTER);
+    text("↓ 메인으로 돌아가기", width / 2, peekHeight / 2);
+
+    pop();
+}
+
+
+function drawSwipeIndicator() {
+    let barWidth = 60;
+    let barHeight = 8;
+    let barX = (width - barWidth) / 2;
+    let barY = height - 20;
+
+    noStroke();
+    fill(200); // 연한 회색
+    rect(barX, barY, barWidth, barHeight, 10); // 모서리 둥글게
 }
 
 
@@ -134,8 +201,6 @@ function drawPage(pageType) {
         drawUploadPage();
         uploadBtn.show();
     }
-
-    edge(); // 공통 테두리
 }
 
 
