@@ -1,4 +1,4 @@
-let images = []; //테스트해볼게
+let images = [];
 let currentIndex = 0;
 let targetIndex = 0;
 let transitioning = false;
