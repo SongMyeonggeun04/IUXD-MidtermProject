@@ -1,4 +1,4 @@
-let images = [];
+let images = []; //aasdfasdf
 let currentIndex = 0;
 let targetIndex = 0;
 let transitioning = false;
