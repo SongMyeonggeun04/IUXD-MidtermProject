@@ -1,4 +1,4 @@
-let images = []; //0420
+let images = []; //최찬옥
 let currentIndex = 0;
 let targetIndex = 0;
 let transitioning = false;
