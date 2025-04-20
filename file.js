@@ -4,6 +4,13 @@ let targetIndex = 0;
 let transitioning = false;
 let transitionX = 0;
 let direction = 1;
+let dragStartY = null;
+let isTransitioningPage = false;
+let transitionOffset = 0;
+let transitionDirection = ""; // "up" 또는 "down"
+let transitionProgress = 0; // 0 ~ 1
+let transitionDuration = 20; // 프레임 수 기준, 느릴수록 천천히
+
 
 let viewStartTime = 0;
 let popupVisible = false;
@@ -73,19 +80,65 @@ function setup() {
     uploadBtn.hide(); 
 }
 
+function easeInOutQuad(t) {
+    return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+}
+
+
 function draw() {
     background(255);
 
-    if (currentPage === "slider") {
+    if (isTransitioningPage) {
+        transitionProgress += 1 / transitionDuration;
+        let eased = easeInOutQuad(constrain(transitionProgress, 0, 1));
+
+        let offset = eased * height;
+        if (transitionDirection === "up") {
+            push();
+            translate(0, -offset);
+            drawPage("slider");
+            pop();
+
+            push();
+            translate(0, height - offset);
+            drawPage("upload");
+            pop();
+        } else if (transitionDirection === "down") {
+            push();
+            translate(0, offset);
+            drawPage("upload");
+            pop();
+
+            push();
+            translate(0, -height + offset);
+            drawPage("slider");
+            pop();
+        }
+
+        if (transitionProgress >= 1) {
+            isTransitioningPage = false;
+            transitionProgress = 0;
+            currentPage = transitionDirection === "up" ? "upload" : "slider";
+        }
+    } else {
+        drawPage(currentPage);
+    }
+}
+
+
+function drawPage(pageType) {
+    if (pageType === "slider") {
         drawSliderPage();
         uploadBtn.hide();
-    } else if (currentPage === "upload") {
+    } else if (pageType === "upload") {
         drawUploadPage();
         uploadBtn.show();
     }
 
-    drawSwitchButton(); // 상단 전환 버튼 공통
+    edge(); // 공통 테두리
 }
+
+
 
 function drawSliderPage() {
     drawArrows();
@@ -165,6 +218,7 @@ function drawSwitchButton() {
 }
 
 function mousePressed() {
+    dragStartY = mouseY;
     // 페이지 전환 버튼 클릭
     if (mouseX > 10 && mouseX < 130 && mouseY > 600 && mouseY < 630) {
         if (currentPage === "slider") {
@@ -202,7 +256,60 @@ function mousePressed() {
         direction = -1;
         transitioning = true;
     }
+
+    if (currentPage !== "slider") return;
+
+    if (popupVisible) {
+        let textY = height / 2 + popupImage[currentIndex].height / 8 + 10;
+        if (mouseX > width / 2 - 100 && mouseX < width / 2 + 100 &&
+            mouseY > textY && mouseY < textY + 48) {
+            window.open(popupData[currentIndex].link, "_blank");
+            return;
+        }
+        popupVisible = false;
+        viewStartTime = millis();
+        return;
+    }
+
+    if (transitioning) return;
+
+    if (mouseX > 30 && mouseX < 50 && mouseY > height / 2 - 20 && mouseY < height / 2 + 20) {
+        targetIndex = (currentIndex - 1 + images.length) % images.length;
+        direction = 1;
+        transitioning = true;
+    }
+
+    if (mouseX > width - 50 && mouseX < width - 30 && mouseY > height / 2 - 20 && mouseY < height / 2 + 20) {
+        targetIndex = (currentIndex + 1) % images.length;
+        direction = -1;
+        transitioning = true;
+    }
 }
+
+function mouseReleased() {
+    if (dragStartY === null) return;
+
+    let dragEndY = mouseY;
+    let dragDistance = dragEndY - dragStartY;
+
+    if (!isTransitioningPage) {
+        if (currentPage === "slider" && dragDistance < -80) {
+            transitionDirection = "up";
+            isTransitioningPage = true;
+            transitionProgress = 0;
+        } else if (currentPage === "upload" && dragDistance > 80) {
+            transitionDirection = "down";
+            isTransitioningPage = true;
+            transitionProgress = 0;
+        }
+    }
+
+    dragStartY = null;
+}
+
+
+
+
 
 function handleFile(file) {
     if (file.type === 'image') {
