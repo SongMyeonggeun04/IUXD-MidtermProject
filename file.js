@@ -251,9 +251,33 @@ function popup() {
         popupVisible = true;
     }
 
+    if (!popupVisible && !transitioning) {
+        // 진행 바 설정
+        let elapsed = millis() - viewStartTime;
+        let progress = constrain(elapsed / 2000, 0, 1); // 0 ~ 1 사이
+        let barWidth = 220;
+        let barHeight = 20; // ✅ 더 두껍게
+        let barX = width / 2 - barWidth / 2;
+        let barY = 100; // 위쪽 위치
+
+        // 바 배경
+        noStroke();
+        fill(200);
+        rect(barX, barY, barWidth, barHeight, 10); // 라운드 모서리도 더 둥글게
+
+        // 진행 바 채워지는 부분
+        fill('#13757B');
+        rect(barX, barY, barWidth * progress, barHeight, 10);
+
+        // 텍스트: 상세 페이지로 이동
+        fill(255);
+        textSize(13);
+        textAlign(CENTER, CENTER);
+        text("상세 페이지로 이동", width / 2, barY + barHeight / 2);
+    }
+
     if (popupVisible) {
-        push(); // 스타일 변경 전 상태 저장
-    
+        push(); // 스타일 저장
         fill(0, 0, 0, 150);
         rect(0, 0, width, height);
 
@@ -262,20 +286,20 @@ function popup() {
 
         fill(255);
         textSize(16);
-        textAlign(CENTER, TOP); // 팝업 안에서만 적용
+        textAlign(CENTER, TOP);
         let textY = height / 2 + popupImage[currentIndex].height / 8 + 10;
         text(popupData[currentIndex].text, width / 2, textY);
 
         // 버튼 하이라이트 (링크 영역)
         if (mouseX > width / 2 - 100 && mouseX < width / 2 + 100 &&
             mouseY > textY && mouseY < textY + 48) {
-                cursor(HAND);
-            } else {
-                cursor(ARROW);
-            }
-            pop(); // 스타일 원상복귀
+            cursor(HAND);
         } else {
-                cursor(ARROW);
+            cursor(ARROW);
+        }
+
+        pop(); // 스타일 복구
+    } else {
+        cursor(ARROW);
     }
 }
-
