@@ -13,6 +13,9 @@ let transitionDuration = 20; // 프레임 수 기준, 느릴수록 천천히
 
 let dragStartX = null;
 
+let commentInput = '';
+let comments = [];
+
 let viewStartTime = 0;
 let popupVisible = false;
 let popupImage = [];
@@ -58,7 +61,7 @@ function preload() {
         //내리디깅1
         { text: "-에브리타임 바로가기-\n내리디깅 디제잉 파티에 여러분을 초대합니다.\n공사 기간 : 3월 7일(금) 8:00pm~12:00am\n공사 범위 : 올빼미", link: "https://account.everytime.kr/login" },
         //시커스2
-        { text: "-에브리타임 바로가기-\n안녕하세요. 경인교대 ST.7, 명지대 화이트홀스,\n서울과기대 세마치, 중앙대 씨커스와 함께 준비한\n연합공연 “청춘일화”에 여러분을 초대합니다.", link: "https://account.everytime.kr/login" }
+        { text: "-에브리타임 바로가기-\n안녕하세요. 경인교대 ST.7, 명지대 화이트홀스,\n서울과기대 세마치, 중앙대 씨커스와 함께 준비한\n연합공연 '청춘일화'에 여러분을 초대합니다.", link: "https://account.everytime.kr/login" }
     ];
 
     for (let i = 0; i < urls.length; i++) {
@@ -301,15 +304,24 @@ function mousePressed() {
     if (currentPage !== "slider") return;
 
     if (popupVisible) {
-        let textY = height / 2 + popupImage[currentIndex].height / 8 + 10;
+        // X 버튼 영역 체크
+        let closeButtonSize = 30;
+        let closeButtonX = width / 2 + popupImage[currentIndex].width / 8 - closeButtonSize/2;
+        let closeButtonY = height / 2 - popupImage[currentIndex].height / 8 - closeButtonSize/2 - 50;
+        
+        if (mouseX > closeButtonX && mouseX < closeButtonX + closeButtonSize &&
+            mouseY > closeButtonY && mouseY < closeButtonY + closeButtonSize) {
+            popupVisible = false;
+            viewStartTime = millis();
+            return;
+        }
+
+        let textY = height / 2 + popupImage[currentIndex].height / 8 + 10 - 50;
         if (mouseX > width / 2 - 100 && mouseX < width / 2 + 100 &&
             mouseY > textY && mouseY < textY + 48) {
             window.open(popupData[currentIndex].link, "_blank");
             return;
         }
-        popupVisible = false;
-        viewStartTime = millis();
-        return;
     }
 
     if (transitioning) return;
@@ -325,33 +337,40 @@ function mousePressed() {
         direction = -1;
         transitioning = true;
     }
-
-    if (currentPage !== "slider") return;
-
+    
+    // 등록 버튼 좌표 계산 (팝업Visible일 때만 사용되므로 동일한 기준)
     if (popupVisible) {
-        let textY = height / 2 + popupImage[currentIndex].height / 8 + 10;
-        if (mouseX > width / 2 - 100 && mouseX < width / 2 + 100 &&
-            mouseY > textY && mouseY < textY + 48) {
-            window.open(popupData[currentIndex].link, "_blank");
-            return;
+        let inputX = width / 2 - 120;
+        let inputY = height / 2 + popupImage[currentIndex].height / 8 + 10 + 70 - 20;
+        let btnX = inputX + 200 + 10;
+        let btnY = inputY;
+        let btnW = 60;
+        let btnH = 30;
+
+        if (mouseX > btnX && mouseX < btnX + btnW &&
+            mouseY > btnY && mouseY < btnY + btnH) {
+            if (commentInput.trim() !== '') {
+                comments.push(commentInput);
+                commentInput = '';
+            }
         }
-        popupVisible = false;
-        viewStartTime = millis();
-        return;
     }
+}
 
-    if (transitioning) return;
-
-    if (mouseX > 30 && mouseX < 50 && mouseY > height / 2 - 20 && mouseY < height / 2 + 20) {
-        targetIndex = (currentIndex - 1 + images.length) % images.length;
-        direction = 1;
-        transitioning = true;
+function keyTyped() {
+    if (popupVisible) {
+        if (key.length === 1) {
+            commentInput += key;
+        }
     }
+}
 
-    if (mouseX > width - 50 && mouseX < width - 30 && mouseY > height / 2 - 20 && mouseY < height / 2 + 20) {
-        targetIndex = (currentIndex + 1) % images.length;
-        direction = -1;
-        transitioning = true;
+function keyPressed() {
+    if (popupVisible) {
+        if (keyCode === BACKSPACE) {
+            commentInput = commentInput.slice(0, -1);
+            return false; // 브라우저 기본 백스페이스 동작(뒤로 가기)을 막기 위해
+        }
     }
 }
 
@@ -472,19 +491,67 @@ function popup() {
     }
 
     if (popupVisible) {
-        push(); // 스타일 저장
+        push();
         fill(0, 0, 0, 150);
         rect(0, 0, width, height);
-
+    
         imageMode(CENTER);
-        image(popupImage[currentIndex], width / 2, height / 2, popupImage[currentIndex].width / 4, popupImage[currentIndex].height / 4);
-
+        image(popupImage[currentIndex], width / 2, height / 2 - 50, popupImage[currentIndex].width / 4, popupImage[currentIndex].height / 4);
+    
+        // X 표시 추가
+        let closeButtonSize = 30;
+        let closeButtonX = width / 2 + popupImage[currentIndex].width / 8 - closeButtonSize/2;
+        let closeButtonY = height / 2 - popupImage[currentIndex].height / 8 - closeButtonSize/2 - 50;
+        
         fill(255);
+        stroke(255);
+        strokeWeight(2);
+        line(closeButtonX, closeButtonY, closeButtonX + closeButtonSize, closeButtonY + closeButtonSize);
+        line(closeButtonX + closeButtonSize, closeButtonY, closeButtonX, closeButtonY + closeButtonSize);
+    
+        fill(255);
+        stroke('#13757B');
         textSize(16);
         textAlign(CENTER, TOP);
-        let textY = height / 2 + popupImage[currentIndex].height / 8 + 10;
+        let textY = height / 2 + popupImage[currentIndex].height / 8 + 10 - 50;
         text(popupData[currentIndex].text, width / 2, textY);
-
+    
+        // 댓글 입력창
+        let inputX = width / 2 - 120;
+        let inputY = height / 2 + popupImage[currentIndex].height / 8 + 10 + 70 - 20;
+        let inputW = 200;
+        let inputH = 30;
+    
+        fill(255);
+        rect(inputX, inputY, inputW, inputH, 5);
+        fill(0);
+        textAlign(LEFT, CENTER);
+        textSize(14);
+        noStroke();
+        text(commentInput, inputX + 5, inputY + inputH / 2);
+    
+        // 등록 버튼
+        let btnX = inputX + inputW + 10;
+        let btnY = inputY;
+        let btnW = 60;
+        let btnH = inputH;
+    
+        fill('#13757B');
+        rect(btnX, btnY, btnW, btnH, 5);
+        fill(255);
+        textAlign(CENTER, CENTER);
+        text("등록", btnX + btnW / 2, btnY + btnH / 2);
+    
+        // 댓글 리스트 출력
+        textAlign(LEFT, TOP);
+        fill(255);
+        stroke('#13757B');
+        textSize(13);
+        let commentListY = inputY + inputH + 10;
+        for (let i = 0; i < comments.length; i++) {
+            text('- ' + comments[i], inputX, commentListY + i * 20);
+        }
+    
         // 버튼 하이라이트 (링크 영역)
         if (mouseX > width / 2 - 100 && mouseX < width / 2 + 100 &&
             mouseY > textY && mouseY < textY + 48) {
@@ -492,8 +559,8 @@ function popup() {
         } else {
             cursor(ARROW);
         }
-
-        pop(); // 스타일 복구
+    
+        pop(); 
     } else {
         cursor(ARROW);
     }
