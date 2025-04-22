@@ -306,9 +306,9 @@ function mousePressed() {
 
     if (popupVisible) {
         // X 버튼 영역 체크
-        let closeButtonSize = 30;
+        let closeButtonSize = 20;
         let closeButtonX = width / 2 + popupImage[currentIndex].width / 8 - closeButtonSize/2;
-        let closeButtonY = height / 2 - popupImage[currentIndex].height / 8 - closeButtonSize/2 - 50;
+        let closeButtonY = height / 2 - popupImage[currentIndex].height / 8 - closeButtonSize/2 - 50 - 20;
         
         if (mouseX > closeButtonX && mouseX < closeButtonX + closeButtonSize &&
             mouseY > closeButtonY && mouseY < closeButtonY + closeButtonSize) {
@@ -500,9 +500,9 @@ function popup() {
         image(popupImage[currentIndex], width / 2, height / 2 - 50, popupImage[currentIndex].width / 4, popupImage[currentIndex].height / 4);
     
         // X 표시 추가
-        let closeButtonSize = 30;
+        let closeButtonSize = 20;
         let closeButtonX = width / 2 + popupImage[currentIndex].width / 8 - closeButtonSize/2;
-        let closeButtonY = height / 2 - popupImage[currentIndex].height / 8 - closeButtonSize/2 - 50;
+        let closeButtonY = height / 2 - popupImage[currentIndex].height / 8 - closeButtonSize/2 - 50 - 20;
         
         fill(255);
         stroke(255);
