@@ -351,9 +351,15 @@ function mousePressed() {
         if (mouseX > btnX && mouseX < btnX + btnW &&
             mouseY > btnY && mouseY < btnY + btnH) {
             if (commentInput.trim() !== '') {
-                comments[currentIndex].push(commentInput);
+                // 최신 댓글이 맨 위에 오도록 배열의 맨 앞에 추가
+                comments[currentIndex].unshift(commentInput);
+                // 댓글이 3개 이상이면 가장 오래된 댓글(마지막 댓글) 제거
+                if (comments[currentIndex].length > 2) {
+                    comments[currentIndex].pop();
+                }
                 commentInput = '';
             }
+            return;
         }
     }
 }
@@ -549,7 +555,8 @@ function popup() {
         stroke('#13757B');
         textSize(13);
         let commentListY = inputY + inputH + 10;
-        for (let i = 0; i < comments[currentIndex].length; i++) {
+        // 최신 댓글부터 표시 (최대 2개)
+        for (let i = 0; i < Math.min(2, comments[currentIndex].length); i++) {
             text('- ' + comments[currentIndex][i], inputX, commentListY + i * 20);
         }
     
