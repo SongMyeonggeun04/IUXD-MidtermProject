@@ -52,13 +52,13 @@ function preload() {
 
     popupData = [
         //시커스1
-        { text: "2024 SEEKERS SUMMER CONCERT TICKET\n티켓 가격 : 7,000원\n티켓 오픈 일시 : 2024.06.24 (월) 18:00", link: "https://everytime.kr/374660/v/347522024" },
+        { text: "-에브리타임 바로가기-\n2024 SEEKERS SUMMER CONCERT TICKET\n티켓 가격 : 7,000원\n티켓 오픈 일시 : 2024.06.24 (월) 18:00", link: "https://everytime.kr/374660/v/347522024" },
         //파동1
-        { text: "중앙대학교 × 공간파동 《잃어버린 순간들》\n당신은 어떤 순간을 잃어버렸고,\n또 그것을 찾기 위해 무엇을 할 것인가?", link: "https://account.everytime.kr/login" },
+        { text: "-에브리타임 바로가기-\n중앙대학교 × 공간파동 《잃어버린 순간들》\n당신은 어떤 순간을 잃어버렸고,\n또 그것을 찾기 위해 무엇을 할 것인가?", link: "https://account.everytime.kr/login" },
         //내리디깅1
-        { text: "내리디깅 디제잉 파티에 여러분을 초대합니다.\n공사 기간 : 3월 7일(금) 8:00pm~12:00am\n공사 범위 : 올빼미", link: "https://account.everytime.kr/login" },
+        { text: "-에브리타임 바로가기-\n내리디깅 디제잉 파티에 여러분을 초대합니다.\n공사 기간 : 3월 7일(금) 8:00pm~12:00am\n공사 범위 : 올빼미", link: "https://account.everytime.kr/login" },
         //시커스2
-        { text: "안녕하세요. 경인교대 ST.7, 명지대 화이트홀스,\n서울과기대 세마치, 중앙대 씨커스와 함께 준비한\n연합공연 “청춘일화”에 여러분을 초대합니다.", link: "https://account.everytime.kr/login" }
+        { text: "-에브리타임 바로가기-\n안녕하세요. 경인교대 ST.7, 명지대 화이트홀스,\n서울과기대 세마치, 중앙대 씨커스와 함께 준비한\n연합공연 “청춘일화”에 여러분을 초대합니다.", link: "https://account.everytime.kr/login" }
     ];
 
     for (let i = 0; i < urls.length; i++) {
@@ -68,6 +68,8 @@ function preload() {
 
     titleImage = loadImage("https://lh3.googleusercontent.com/fife/ALs6j_FKQYzRMrSkkrP4Sr-2B8SbFonjtHuGnwnSiI9F9qeE_N0c0S-pO4Xr7Zs5wehxSeRFpSc0tDliww_WdZhFO83RxphmeLitui865kwtLiaOxuJUU2wbE4zz5FDC3RtPeysF2Pz_Ee_twhW0aVtda_8-RatZcFx-O0_70ErFflL0rNwa6XFGVdu7xh-aht6NSTHuOmNF6TpxBaYCVeAbfYZVcHexQUqON0C87hIBQwQQZrpHbB4gU5IUrJiysrtFFGFfi78JYU_NKiJk9QQQNAxLz9I-6ZZuBuLN9BbeCP-kPKnyumMcDqbfntg4wni8WDKPLsDB3TDD0OI4R1X6Pbb9qD3j0AopKfqN_OTgeyu5JSQRu0R7HgzXSZWxyQtvh8DVixr9ga7uO10xstyFDLu9Hf3kRZSgvZmKprIg5uVS1n-oN3sMwKqsWat78tCxmzoJZaJHTYoXPPiofWI2IX4JTHG-3aeAf0kx1trAX1dMA9xEd2hL8WROCmdov6fhugdhKfdzKbBoyWzs-p-SEriyjqFo3gjYMA9sEbqD-ynYjlUwZDqMn1udRXZdSzfhnVem2yGEKdmQPkIjpjCFS1mR7uy1pZJHLrg-HuyeEeHpMe8n-UbI-FLE0ti_uLc7t-7bAnl0NTBQ_kvtUD_oGIoMq24qOHXdFOSHLMgTFLGYPM22T3oSI24Un_KKn2WN83-yAytJTtR7ejpmEAF-U8YLq9yfZAeQnhI_gJJjkecgGMHrQVCYctejoyGvopMq1EIeg9hFhzQep0CIQy-PH62xvAzZp3js1v8gCGT4oiBHZ7WLiH-DD6XuCgTrp3x10yus1AKrX51nCE7LQSPfY5hpUtBH4ndSqw1CDgk5bFQpVDJzM7nM5b3OW8rlhrT-4X9xsg-_aXexMvLwS0Fh8xpY--BrZtOEZ7yRHKruw6mPuBd5zuOv71XNsH-dwfhtGVSzU4yLWfqvCc_7gg-Ximr10ruNTc_j5TLqTXHRtgDuH1Wmbs64ESCd4QLI7yyconcYyZ5KLHnu4sGOtw9Qbx7fpPLbwXtXSDb7OiRYtR0y1RF4pYLM3Ryxa0D1ra34hXF0enRLk7tJGNV7QZ3xRP0GnP5SAbVAm6J3A3Z719LA-G76aBNqshhJcA6RBs3fsRFBk2yNzM2wlD_7AMWnhvSes3FXKG6OAvda0owdkyoWHYFXRDy6KKp1T5Dc-tjtir2sDje6e10xC4di6bPlqxNCDpI51ixMOc8iyTR-toji18SYDE-YsdEcoL7AaM2xCHjs1xtQScY4VjL9HIbSeEn_YUnLxast-PaM-BGodNXhsnTyYiNNUeskti68qQHmfq6lBdE6JP4e0SYpguXVyisiq6gHPdLJpUf9m_1aBjRgXmRHHvb8BWsmUj-S5qJcPnAA63d6PKMHOYNJE3_DatNhnoxqhvSQ4ee0NwkxxRneKBSxMLBWVjh4JHGLlFJBCbe5j-uyvskm5nrDVUSvLrpW_RfFekU_vdgXi-gVaOQnVJmsqwslZsl_t-zjmxmZ3jwrwBCmwmqZLEmjMZodQjKStgUchf0n4_2mIaw1LrDWUxN8_-YmuHmn25RL6BmUYUY-WvUfE0kuT4Y9Zhw3uwZ8-Fo4rBIyac6YfVqCY3WRcsVBhYN6YTPgCiN7uc-29hTEF63m7bUquT2A1urnHZs59sc=w2560-h1186");
 }
+
+
 
 function setup() {
     createCanvas(360, 640);
@@ -243,28 +245,28 @@ function drawSliderPage() {
 function drawUploadPage() {
     fill('#13757B');
     stroke(0);
-    rect(20, 20, 140, 100, 5);
+    rect(20, 20 + 50, 140, 100, 5);
     fill(255);
     noStroke();
-    text("(날씨와 시간표를 \n토대로 컨텐츠 추천)", 90, 70);
+    text("(날씨와 시간표를 \n토대로 컨텐츠 추천)", 90, 70 + 50);
 
     fill('#13757B');
     stroke(0);
-    rect(200, 20, 140, 100, 5);
+    rect(200, 20 + 50, 140, 100, 5);
     fill(255);
     noStroke();
-    text("날짜 출력 박스", 270, 70);
+    text("날짜 출력 박스", 270, 70 + 50);
 
     fill('#13757B');
     stroke(150, 0, 150);
-    rect(20, 140, 320, 400, 30);
+    rect(20, 140 + 50, 320, 400, 30);
     fill(255);
     noStroke();
-    text("사용자가 사진을 추가하면\n그 사진을 출력해주는 박스", 180, 240);
+    text("에브리타임 시간표 추가하기", 180, 240 + 100);
 
     if (uploadedImage) {
         imageMode(CENTER);
-        image(uploadedImage, 180, 340, 260, 320);
+        image(uploadedImage, 180, 340 + 50, 260, 320);
     }
 
     edge();
