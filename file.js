@@ -408,6 +408,38 @@ function mousePressed() {
             window.open(popupData[currentIndex].link, "_blank");
             return;
         }
+
+        // 입력창 클릭 체크
+        let inputX = width / 2 - 120;
+        let inputY = height / 2 + popupImage[currentIndex].height / 8 + 10 + 70 - 20;
+        let inputW = 200;
+        let inputH = 30;
+        let btnX = inputX + inputW + 10;
+        let btnY = inputY;
+        let btnW = 60;
+        let btnH = 30;
+
+        if (mouseX > inputX && mouseX < inputX + inputW &&
+            mouseY > inputY && mouseY < inputY + inputH) {
+            isInputFocused = true;
+            cursorBlink = 0;
+            return;
+        } else {
+            isInputFocused = false;
+        }
+
+        if (mouseX > btnX && mouseX < btnX + btnW &&
+            mouseY > btnY && mouseY < btnY + btnH) {
+            if (commentInput.trim() !== '') {
+                comments[currentIndex].unshift(commentInput);
+                if (comments[currentIndex].length > 2) {
+                    comments[currentIndex].pop();
+                }
+                commentInput = '';
+            }
+            return;
+        }
+        return; // 팝업이 표시된 상태에서는 이미지 전환을 막음
     }
 
     if (transitioning) return;
@@ -422,37 +454,6 @@ function mousePressed() {
         targetIndex = (currentIndex + 1) % images.length;
         direction = -1;
         transitioning = true;
-    }
-    
-    // 등록 버튼 좌표 계산 (팝업Visible일 때만 사용되므로 동일한 기준)
-    if (popupVisible) {
-        let inputX = width / 2 - 120;
-        let inputY = height / 2 + popupImage[currentIndex].height / 8 + 10 + 70 - 20;
-        let inputW = 200;
-        let inputH = 30;
-
-        // 입력창 클릭 체크
-        if (mouseX > inputX && mouseX < inputX + inputW &&
-            mouseY > inputY && mouseY < inputY + inputH) {
-            isInputFocused = true;
-            cursorBlink = 0;
-            return;
-        } else {
-            isInputFocused = false;
-        }
-
-        if (mouseX > inputX + inputW + 10 && mouseX < inputX + inputW + 10 + 60 &&
-            mouseY > inputY && mouseY < inputY + inputH) {
-            if (commentInput.trim() !== '') {
-                comments[currentIndex].unshift(commentInput);
-                if (comments[currentIndex].length > 2) {
-                    comments[currentIndex].pop();
-                }
-                commentInput = '';
-                isInputFocused = false;
-            }
-            return;
-        }
     }
 }
 
@@ -483,7 +484,7 @@ function keyPressed() {
 }
 
 function mouseDragged() {
-    if (dragStartX === null || transitioning || currentPage !== "slider") return;
+    if (dragStartX === null || transitioning || currentPage !== "slider" || popupVisible) return;
 
     let dragDistanceX = mouseX - dragStartX;
 
