@@ -54,11 +54,11 @@ function preload() {
         //시커스1
         { text: "2024 SEEKERS SUMMER CONCERT TICKET\n티켓 가격 : 7,000원\n티켓 오픈 일시 : 2024.06.24 (월) 18:00", link: "https://everytime.kr/374660/v/347522024" },
         //파동1
-        { text: "중앙대학교 × 공간파동 《잃어버린 순간들》\n당신은 어떤 순간을 잃어버렸고,\n또 그것을 찾기 위해 무엇을 할 것인가?", link: "https://naver.com" },
+        { text: "중앙대학교 × 공간파동 《잃어버린 순간들》\n당신은 어떤 순간을 잃어버렸고,\n또 그것을 찾기 위해 무엇을 할 것인가?", link: "https://account.everytime.kr/login" },
         //내리디깅1
-        { text: "내리디깅 디제잉 파티에 여러분을 초대합니다.\n공사 기간 : 3월 7일(금) 8:00pm~12:00am\n공사 범위 : 올빼미", link: "https://example.com/3" },
+        { text: "내리디깅 디제잉 파티에 여러분을 초대합니다.\n공사 기간 : 3월 7일(금) 8:00pm~12:00am\n공사 범위 : 올빼미", link: "https://account.everytime.kr/login" },
         //시커스2
-        { text: "안녕하세요. 경인교대 ST.7, 명지대 화이트홀스,\n서울과기대 세마치, 중앙대 씨커스와 함께 준비한\n연합공연 “청춘일화”에 여러분을 초대합니다.", link: "https://example.com/4" }
+        { text: "안녕하세요. 경인교대 ST.7, 명지대 화이트홀스,\n서울과기대 세마치, 중앙대 씨커스와 함께 준비한\n연합공연 “청춘일화”에 여러분을 초대합니다.", link: "https://account.everytime.kr/login" }
     ];
 
     for (let i = 0; i < urls.length; i++) {
