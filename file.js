@@ -14,7 +14,7 @@ let transitionDuration = 20; // 프레임 수 기준, 느릴수록 천천히
 let dragStartX = null;
 
 let commentInput = '';
-let comments = [];
+let comments = []; // 각 이미지별 댓글을 저장할 2차원 배열로 변경
 
 let viewStartTime = 0;
 let popupVisible = false;
@@ -67,6 +67,7 @@ function preload() {
     for (let i = 0; i < urls.length; i++) {
         images[i] = loadImage(urls[i]);
         popupImage[i] = loadImage(popupurls[i]);
+        comments[i] = []; // 각 이미지별 댓글 배열 초기화
     }
 
     titleImage = loadImage("https://lh3.googleusercontent.com/fife/ALs6j_FKQYzRMrSkkrP4Sr-2B8SbFonjtHuGnwnSiI9F9qeE_N0c0S-pO4Xr7Zs5wehxSeRFpSc0tDliww_WdZhFO83RxphmeLitui865kwtLiaOxuJUU2wbE4zz5FDC3RtPeysF2Pz_Ee_twhW0aVtda_8-RatZcFx-O0_70ErFflL0rNwa6XFGVdu7xh-aht6NSTHuOmNF6TpxBaYCVeAbfYZVcHexQUqON0C87hIBQwQQZrpHbB4gU5IUrJiysrtFFGFfi78JYU_NKiJk9QQQNAxLz9I-6ZZuBuLN9BbeCP-kPKnyumMcDqbfntg4wni8WDKPLsDB3TDD0OI4R1X6Pbb9qD3j0AopKfqN_OTgeyu5JSQRu0R7HgzXSZWxyQtvh8DVixr9ga7uO10xstyFDLu9Hf3kRZSgvZmKprIg5uVS1n-oN3sMwKqsWat78tCxmzoJZaJHTYoXPPiofWI2IX4JTHG-3aeAf0kx1trAX1dMA9xEd2hL8WROCmdov6fhugdhKfdzKbBoyWzs-p-SEriyjqFo3gjYMA9sEbqD-ynYjlUwZDqMn1udRXZdSzfhnVem2yGEKdmQPkIjpjCFS1mR7uy1pZJHLrg-HuyeEeHpMe8n-UbI-FLE0ti_uLc7t-7bAnl0NTBQ_kvtUD_oGIoMq24qOHXdFOSHLMgTFLGYPM22T3oSI24Un_KKn2WN83-yAytJTtR7ejpmEAF-U8YLq9yfZAeQnhI_gJJjkecgGMHrQVCYctejoyGvopMq1EIeg9hFhzQep0CIQy-PH62xvAzZp3js1v8gCGT4oiBHZ7WLiH-DD6XuCgTrp3x10yus1AKrX51nCE7LQSPfY5hpUtBH4ndSqw1CDgk5bFQpVDJzM7nM5b3OW8rlhrT-4X9xsg-_aXexMvLwS0Fh8xpY--BrZtOEZ7yRHKruw6mPuBd5zuOv71XNsH-dwfhtGVSzU4yLWfqvCc_7gg-Ximr10ruNTc_j5TLqTXHRtgDuH1Wmbs64ESCd4QLI7yyconcYyZ5KLHnu4sGOtw9Qbx7fpPLbwXtXSDb7OiRYtR0y1RF4pYLM3Ryxa0D1ra34hXF0enRLk7tJGNV7QZ3xRP0GnP5SAbVAm6J3A3Z719LA-G76aBNqshhJcA6RBs3fsRFBk2yNzM2wlD_7AMWnhvSes3FXKG6OAvda0owdkyoWHYFXRDy6KKp1T5Dc-tjtir2sDje6e10xC4di6bPlqxNCDpI51ixMOc8iyTR-toji18SYDE-YsdEcoL7AaM2xCHjs1xtQScY4VjL9HIbSeEn_YUnLxast-PaM-BGodNXhsnTyYiNNUeskti68qQHmfq6lBdE6JP4e0SYpguXVyisiq6gHPdLJpUf9m_1aBjRgXmRHHvb8BWsmUj-S5qJcPnAA63d6PKMHOYNJE3_DatNhnoxqhvSQ4ee0NwkxxRneKBSxMLBWVjh4JHGLlFJBCbe5j-uyvskm5nrDVUSvLrpW_RfFekU_vdgXi-gVaOQnVJmsqwslZsl_t-zjmxmZ3jwrwBCmwmqZLEmjMZodQjKStgUchf0n4_2mIaw1LrDWUxN8_-YmuHmn25RL6BmUYUY-WvUfE0kuT4Y9Zhw3uwZ8-Fo4rBIyac6YfVqCY3WRcsVBhYN6YTPgCiN7uc-29hTEF63m7bUquT2A1urnHZs59sc=w2560-h1186");
@@ -350,7 +351,7 @@ function mousePressed() {
         if (mouseX > btnX && mouseX < btnX + btnW &&
             mouseY > btnY && mouseY < btnY + btnH) {
             if (commentInput.trim() !== '') {
-                comments.push(commentInput);
+                comments[currentIndex].push(commentInput);
                 commentInput = '';
             }
         }
@@ -548,8 +549,8 @@ function popup() {
         stroke('#13757B');
         textSize(13);
         let commentListY = inputY + inputH + 10;
-        for (let i = 0; i < comments.length; i++) {
-            text('- ' + comments[i], inputX, commentListY + i * 20);
+        for (let i = 0; i < comments[currentIndex].length; i++) {
+            text('- ' + comments[currentIndex][i], inputX, commentListY + i * 20);
         }
     
         // 버튼 하이라이트 (링크 영역)
