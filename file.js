@@ -320,22 +320,21 @@ function drawSliderPage() {
 function drawUploadPage() {
     stroke('#13757B');
     fill(255);
-    rect(20, 70, 140, 100, 5); // 추천 박스
+    rect(20, 100, 320, 70, 5); // 추천 박스
     fill('#13757B'); noStroke();
-    textSize(12);
+    textSize(14);
     textAlign(CENTER, CENTER);
     textWrap(WORD);
-    text(recommendationText, 90, 120); // 텍스트 출력 위치와 너비
+    text(recommendationText, 180, 170 - 35); // 텍스트 출력 위치와 너비
 
-    stroke('#13757B')
-    fill(255);
-    rect(200, 70, 140, 100, 5); // 날짜 박스
     fill('#13757B'); noStroke();
     textSize(16);
-    text(getShortDateFormatted(), 270, 105);
+    textAlign(CENTER, CENTER);
+    text(getShortDateFormatted(), 180 - 70, 65);
 
     textSize(14);
-    text(getCurrentTimeFormatted(), 270, 135);
+    textAlign(CENTER, CENTER);
+    text(getCurrentTimeFormatted(), 180 + 73, 65);
 
     fill('#13757B');
 
