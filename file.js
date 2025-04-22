@@ -30,6 +30,10 @@ let currentPage = "slider";
 let uploadedImage;
 let uploadBtn;
 
+let weatherDescription = ''; // 날씨 정보
+let weatherTemp = 0; // 온도
+let recommendationText="추천 정보를 불러오는 중..."; // 추천 정보
+
 function preload() {
     let urls = [
         //시커스1
@@ -86,8 +90,72 @@ function setup() {
     // 업로드 버튼 (초기에는 숨겨짐)
     uploadBtn = createFileInput(handleFile);
     uploadBtn.position(100, 560);
-    uploadBtn.hide(); 
+    uploadBtn.hide();
+    
+    getWeather();
 }
+
+function getWeather() {
+    fetch("https://api.openweathermap.org/data/2.5/weather?q=Seoul&appid=aa74b6437eab87224ae4e2c1d1a79ebd&units=metric&lang=kr")
+        .then(response => response.json())
+        .then(data => {
+            weatherDescription = data.weather[0].description;
+            weatherTemp=data.main.temp;
+
+            let now = new Date();
+            let weekday = now.getDay();
+            let hour = now.getHours();
+
+            getContentRecommendation(weatherDescription, weekday, hour);
+        })
+        .catch(err => console.error("날씨 정보 오류:", err));
+}
+
+function getShortDateFormatted(){
+    const now = new Date(); 
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const weekdayNames = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+    const weekday = weekdayNames[now.getDay()];
+    return `${month}/${day} ${weekday}`;
+}
+
+function getContentRecommendation(weatherDescription, weekday, hour) {
+    let isWeekend = (weekday === 0 || weekday === 6);
+    let timeOfDay = "";
+    if (hour >= 6 && hour < 12) timeOfDay = "오전";
+    else if (hour >= 12 && hour < 18) timeOfDay = "오후";
+    else if (hour >= 18 && hour < 23) timeOfDay = "저녁";
+    else timeOfDay = "심야";
+
+    if (weatherDescription.includes("비")) {
+        if (isWeekend && timeOfDay === "오후") {
+            recommendationText = "비 오는 주말 오후,\n<시끄러워서 안죄송합니다>\n디제잉 공연 어떠세요? 🌧️🎧";
+        } else {
+            recommendationText = "우중충한 날씨엔\n<잃어버린 순간들> 전시회에서\n위로 받아보세요 🖼️";
+        }
+    } else if (weatherDescription.includes("구름")) {
+        if (timeOfDay === "저녁") {
+            recommendationText = "구름 낀 저녁엔\n<청춘일화> 밴드 공연에서\n감성 충전을 해보세요 🎶";
+        } else {
+            recommendationText = "잔잔한 흐린 날엔\n<잃어버린 순간들> 전시회가\n잘 어울려요 🎨";
+        }
+    } else if (weatherDescription.includes("맑음")) {
+        if (isWeekend && timeOfDay === "오후") {
+            recommendationText = "햇살 좋은 주말 오후,\n야외 밴드 공연 <DROP>을\n놓치지 마세요 ☀️🎤";
+        } else if (timeOfDay === "저녁") {
+            recommendationText = "맑은 저녁, 실내 공연장에서\n<청춘일화>가 기다리고 있어요 🎸";
+        } else {
+            recommendationText = "<잃어버린 순간들> 전시로\n하루를 시작해보는 건 어떠세요? ☀️🖼️";
+        }
+    } else if (weatherDescription.includes("박무") || weatherDescription.includes("안개") || weatherDescription.includes("흐림")) {
+        recommendationText = "뿌연 날씨엔\n<잃어버린 순간들> 전시가\n잘 어울려요 🌫️";
+    }
+    else {
+        recommendationText = "오늘은 도서관에서\n편안한 휴식을\n취해해보세요 🌫️";
+    }
+}  
+
 
 function easeInOutQuad(t) {
     return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
@@ -250,19 +318,22 @@ function drawSliderPage() {
 }
 
 function drawUploadPage() {
-    fill('#13757B');
-    stroke(0);
-    rect(20, 20 + 50, 140, 100, 5);
-    fill(255);
-    noStroke();
-    text("(날씨와 시간표를 \n토대로 컨텐츠 추천)", 90, 70 + 50);
+    fill('#13757B'); stroke(0);
+    rect(20, 70, 140, 100, 5); // 추천 박스
+    fill(255); noStroke();
+    textSize(12);
+    textAlign(CENTER, CENTER);
+    textWrap(WORD);
+    text(recommendationText, 90, 120); // 텍스트 출력 위치와 너비
 
-    fill('#13757B');
-    stroke(0);
-    rect(200, 20 + 50, 140, 100, 5);
-    fill(255);
-    noStroke();
-    text("날짜 출력 박스", 270, 70 + 50);
+    fill('#13757B'); stroke(0);
+    rect(200, 70, 140, 100, 5); // 날짜 박스
+    fill(255); noStroke();
+    textSize(16);
+    text(getShortDateFormatted(), 270, 105);
+
+    textSize(14);
+    text(getCurrentTimeFormatted(), 270, 135);
 
     fill('#13757B');
     stroke(150, 0, 150);
@@ -277,6 +348,17 @@ function drawUploadPage() {
     }
 
     edge();
+}
+
+function getCurrentTimeFormatted(){
+    const now = new Date(); 
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+    const period = hours < 12 ? "오전" : "오후";
+    const formattedHours = String(hours % 12 === 0 ? 12 : hours % 12).padStart(2, '0');
+    const formattedMinutes = String(minutes).padStart(2, '0');
+
+    return `${period} ${formattedHours} : ${formattedMinutes}`;
 }
 
 function drawSwitchButton() {
