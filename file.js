@@ -15,6 +15,8 @@ let dragStartX = null;
 
 let commentInput = '';
 let comments = []; // 각 이미지별 댓글을 저장할 2차원 배열로 변경
+let isInputFocused = false; // 입력창 포커스 상태
+let cursorBlink = 0; // 커서 깜빡임 타이밍
 
 let viewStartTime = 0;
 let popupVisible = false;
@@ -146,6 +148,7 @@ function draw() {
         }
     }
     edge(); // 공통 테두리
+    cursorBlink = (cursorBlink + 1) % 60; // 60프레임마다 깜빡임
 }
 
 
@@ -343,21 +346,28 @@ function mousePressed() {
     if (popupVisible) {
         let inputX = width / 2 - 120;
         let inputY = height / 2 + popupImage[currentIndex].height / 8 + 10 + 70 - 20;
-        let btnX = inputX + 200 + 10;
-        let btnY = inputY;
-        let btnW = 60;
-        let btnH = 30;
+        let inputW = 200;
+        let inputH = 30;
 
-        if (mouseX > btnX && mouseX < btnX + btnW &&
-            mouseY > btnY && mouseY < btnY + btnH) {
+        // 입력창 클릭 체크
+        if (mouseX > inputX && mouseX < inputX + inputW &&
+            mouseY > inputY && mouseY < inputY + inputH) {
+            isInputFocused = true;
+            cursorBlink = 0;
+            return;
+        } else {
+            isInputFocused = false;
+        }
+
+        if (mouseX > inputX + inputW + 10 && mouseX < inputX + inputW + 10 + 60 &&
+            mouseY > inputY && mouseY < inputY + inputH) {
             if (commentInput.trim() !== '') {
-                // 최신 댓글이 맨 위에 오도록 배열의 맨 앞에 추가
                 comments[currentIndex].unshift(commentInput);
-                // 댓글이 3개 이상이면 가장 오래된 댓글(마지막 댓글) 제거
                 if (comments[currentIndex].length > 2) {
                     comments[currentIndex].pop();
                 }
                 commentInput = '';
+                isInputFocused = false;
             }
             return;
         }
@@ -376,19 +386,16 @@ function keyPressed() {
     if (popupVisible) {
         if (keyCode === BACKSPACE) {
             commentInput = commentInput.slice(0, -1);
-            return false; // 브라우저 기본 백스페이스 동작(뒤로 가기)을 막기 위해
+            return false;
         } else if (keyCode === ENTER) {
-            // 엔터 키를 눌렀을 때 댓글 등록
             if (commentInput.trim() !== '') {
-                // 최신 댓글이 맨 위에 오도록 배열의 맨 앞에 추가
                 comments[currentIndex].unshift(commentInput);
-                // 댓글이 3개 이상이면 가장 오래된 댓글(마지막 댓글) 제거
                 if (comments[currentIndex].length > 2) {
                     comments[currentIndex].pop();
                 }
                 commentInput = '';
             }
-            return false; // 브라우저 기본 엔터 동작을 막기 위해
+            return false;
         }
     }
 }
@@ -547,8 +554,18 @@ function popup() {
         textAlign(LEFT, CENTER);
         textSize(14);
         noStroke();
+        
+        // 입력된 텍스트 표시
         text(commentInput, inputX + 5, inputY + inputH / 2);
-    
+        
+        // 커서 표시 (깜빡이는 효과)
+        if (isInputFocused && cursorBlink < 30) {
+            let cursorX = inputX + 5 + textWidth(commentInput);
+            stroke(0);
+            line(cursorX, inputY + 5, cursorX, inputY + inputH - 5);
+            noStroke(); // 커서 그린 후 stroke 리셋
+        }
+        
         // 등록 버튼
         let btnX = inputX + inputW + 10;
         let btnY = inputY;
@@ -556,6 +573,7 @@ function popup() {
         let btnH = inputH;
     
         fill('#13757B');
+        noStroke(); // 등록 버튼에 stroke 없음
         rect(btnX, btnY, btnW, btnH, 5);
         fill(255);
         textAlign(CENTER, CENTER);
