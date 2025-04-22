@@ -318,17 +318,19 @@ function drawSliderPage() {
 }
 
 function drawUploadPage() {
-    fill('#13757B'); stroke(0);
+    stroke('#13757B');
+    fill(255);
     rect(20, 70, 140, 100, 5); // 추천 박스
-    fill(255); noStroke();
+    fill('#13757B'); noStroke();
     textSize(12);
     textAlign(CENTER, CENTER);
     textWrap(WORD);
     text(recommendationText, 90, 120); // 텍스트 출력 위치와 너비
 
-    fill('#13757B'); stroke(0);
+    stroke('#13757B')
+    fill(255);
     rect(200, 70, 140, 100, 5); // 날짜 박스
-    fill(255); noStroke();
+    fill('#13757B'); noStroke();
     textSize(16);
     text(getShortDateFormatted(), 270, 105);
 
@@ -336,8 +338,8 @@ function drawUploadPage() {
     text(getCurrentTimeFormatted(), 270, 135);
 
     fill('#13757B');
-    stroke(150, 0, 150);
-    rect(20, 140 + 50, 320, 400, 30);
+
+    rect(20, 140 + 50, 320, 400, 5);
     fill(255);
     noStroke();
     text("에브리타임 시간표 추가하기", 180, 240 + 100);
@@ -522,10 +524,6 @@ function mouseReleased() {
 
     dragStartY = null;
 }
-
-
-
-
 
 function handleFile(file) {
     if (file.type === 'image') {
