@@ -377,6 +377,18 @@ function keyPressed() {
         if (keyCode === BACKSPACE) {
             commentInput = commentInput.slice(0, -1);
             return false; // 브라우저 기본 백스페이스 동작(뒤로 가기)을 막기 위해
+        } else if (keyCode === ENTER) {
+            // 엔터 키를 눌렀을 때 댓글 등록
+            if (commentInput.trim() !== '') {
+                // 최신 댓글이 맨 위에 오도록 배열의 맨 앞에 추가
+                comments[currentIndex].unshift(commentInput);
+                // 댓글이 3개 이상이면 가장 오래된 댓글(마지막 댓글) 제거
+                if (comments[currentIndex].length > 2) {
+                    comments[currentIndex].pop();
+                }
+                commentInput = '';
+            }
+            return false; // 브라우저 기본 엔터 동작을 막기 위해
         }
     }
 }
