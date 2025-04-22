@@ -11,6 +11,7 @@ let transitionDirection = ""; // "up" 또는 "down"
 let transitionProgress = 0; // 0 ~ 1
 let transitionDuration = 20; // 프레임 수 기준, 느릴수록 천천히
 
+let dragStartX = null;
 
 let viewStartTime = 0;
 let popupVisible = false;
@@ -284,6 +285,7 @@ function drawSwitchButton() {
 
 function mousePressed() {
     dragStartY = mouseY;
+    dragStartX = mouseX;
     // 페이지 전환 버튼 클릭
     if (mouseX > 10 && mouseX < 130 && mouseY > 600 && mouseY < 630) {
         if (currentPage === "slider") {
@@ -351,8 +353,27 @@ function mousePressed() {
     }
 }
 
+function mouseDragged() {
+    if (dragStartX === null || transitioning || currentPage !== "slider") return;
+
+    let dragDistanceX = mouseX - dragStartX;
+
+    if (dragDistanceX > 80) { // 오른쪽으로 드래그 → 이전 이미지
+        targetIndex = (currentIndex - 1 + images.length) % images.length;
+        direction = 1;
+        transitioning = true;
+        dragStartX = null;
+    } else if (dragDistanceX < -80) { // 왼쪽으로 드래그 → 다음 이미지
+        targetIndex = (currentIndex + 1) % images.length;
+        direction = -1;
+        transitioning = true;
+        dragStartX = null;
+    }
+}
+
 function mouseReleased() {
     if (dragStartY === null) return;
+    if (dragStartX === null) return;
 
     let dragEndY = mouseY;
     let dragDistance = dragEndY - dragStartY;
